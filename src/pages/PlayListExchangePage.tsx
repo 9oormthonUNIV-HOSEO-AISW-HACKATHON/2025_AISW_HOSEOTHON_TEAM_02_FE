@@ -32,7 +32,7 @@ const [review, setReview] = useState('');
 const genreMap = {
     VOCAL: "보컬",
     DANCE: "댄스",
-    EMO: "감성",
+    EMOTIONAL: "감성",
     HIP: "힙합"
 } as const;
 
@@ -43,7 +43,7 @@ useEffect(() => {
                 params: { userCode }
             });
             setRecommendation(res.data.data);
-            //console.log('추천 데이터:', res.data);
+            console.log('추천 데이터:', res.data);
             setTargetUserCode(res.data.data.targetUserCode);
         } catch (error) {
             console.error('추천 데이터 가져오기 실패:', error);
