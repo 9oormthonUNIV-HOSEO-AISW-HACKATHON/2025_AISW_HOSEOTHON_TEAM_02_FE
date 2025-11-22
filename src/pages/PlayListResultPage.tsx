@@ -48,6 +48,7 @@ const PlayListResultPage: React.FC = () => {
         <div className="h-screen overflow-hidden flex flex-col font-sans bg-gray-50">
             {/* Main Container */}
             <div className="w-full bg-white shadow-xl flex flex-col flex-1 min-h-0">
+
                 
                 {/* 1. Header */}
                 <Header />

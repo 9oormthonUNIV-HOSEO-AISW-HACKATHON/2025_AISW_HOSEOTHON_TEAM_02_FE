@@ -47,13 +47,13 @@ export default function SharePage() {
         <main className="min-h-screen grid grid-rows-[auto_auto_auto_1fr] overflow-hidden">
             <Header />
 
-            <div className="text-center py-8 border-b border-black">
+            <div className="text-center py-8 border-b border-gray-300">
                 <h1 className="text-nickname">주고받은 플레이리스트</h1>
             </div>
 
-            <div className="grid grid-cols-3 border-y border-black text-center">
+            <div className="grid grid-cols-3 border-b border-gray-300 text-center">
                 <button
-                    className="col-span-1 text-heading-h4 p-6 border-r border-black hover:bg-hover-white transition flex items-center justify-center gap-5"
+                    className="col-span-1 text-heading-h4 p-6 border-gray-300 hover:bg-hover-white transition flex items-center justify-center gap-5"
                     onClick={() => navigate("/review")}
                 >
                     <img src={Nextbutton_Left} alt="back" className="w-10" />
@@ -68,7 +68,7 @@ export default function SharePage() {
 
             <div className="grid grid-cols-3 overflow-hidden">
 
-                <div className="col-span-1 border-r border-black overflow-y-auto">
+                <div className="col-span-1 border-r border-gray-300 overflow-y-auto">
                     {mockShareList.map((item, idx) => {
                         const [gen, type, suffix] = item.reviewer.split(" ");
 
@@ -78,7 +78,7 @@ export default function SharePage() {
                             <button
                                 key={idx}
                                 onClick={() => setSelectedIndex(idx)}
-                                className={`w-full text-left px-6 py-7 border-b border-black 
+                                className={`w-full text-left px-6 py-7 border-b border-gray-300
                                 ${active ? "bg-hover-white" : "bg-white"}`}
                             >
                                 <span className="text-heading-h4 font-semibold">
@@ -94,11 +94,11 @@ export default function SharePage() {
                     })}
                 </div>
 
-                <div className="col-span-2 divide-y border-black overflow-hidden text-center">
+                <div className="col-span-2 divide-y overflow-hidden text-center">
                     {mockShareList[selectedIndex].playlist.map((song, idx) => (
                         <div
                             key={idx}
-                            className="p-7 text-heading-h4 bg-primary-100 border-b border-black"
+                            className="p-7 text-heading-h4 bg-primary-100 border-b border-gray-300"
                         >
                             {song}
                         </div>

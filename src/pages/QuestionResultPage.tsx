@@ -34,7 +34,9 @@ const QuestionResultPage: React.FC = () => {
     }
 
   return (
+
       <div className="h-screen overflow-hidden bg-white font-sans text-slate-800">
+
       <div className="w-full border-b border-black">
         
         {/* 1. Top Bar (Logo) */}
@@ -44,21 +46,25 @@ const QuestionResultPage: React.FC = () => {
         <QuestionHeader />
 
         {/* 3. Main Result Section */}
+
           <section className="flex flex-1 min-h-0 border-b border-gray-300">
+
           {/* Left: Result Text */}
           <div className="flex-1 flex flex-col justify-center items-center p-16 mt-2 text-center bg-white">
             <div className="space-y-2">
               <p className="text-3xl text-nickname text-black">
                 당신은 <span className="text-heading-h2 font-extrabold">K-POP</span>{' '}
                 <span className="text-primary-300 text-heading-h2 font-extrabold">{generation}</span>
+
                 <span className="text-heading-h2 font-bold">세대</span>
               </p>
               
               <div className="flex items-end justify-center gap-2 mt-4">
                 <span className="text-primary-300 text-heading-h2 font-extrabold">
+
                     {type}
                 </span>
-                <span className="text-heading-h2 font-extrabold text-black">
+                <span className="text-heading-h2 text-black">
                   유형
                 </span>
                 <span className="text-body-big font-bold text-black ml-48 mb-4">이에요!</span>

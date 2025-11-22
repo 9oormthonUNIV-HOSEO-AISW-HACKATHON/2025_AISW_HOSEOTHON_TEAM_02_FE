@@ -180,6 +180,14 @@ const QuestionPage: React.FC = () => {
   };
 
   const handleSubmit = () => {
+    // 선택된 답 개수 확인
+    const answeredCount = Object.keys(answers).length;
+
+    if (answeredCount < questions.length) {
+      alert(`아직 ${questions.length - answeredCount}개의 질문이 남아 있습니다!`);
+      return;
+    }
+    
     const result = calculateResult();
     console.log(" 최종 결과:", result);
     navigate("/result", { 
@@ -197,6 +205,7 @@ const QuestionPage: React.FC = () => {
   return (
       <div className="h-screen bg-white font-sans overflow-hidden flex flex-col">
       <div className="w-full border-b border-black shrink-0">
+
         <Header />
 
         <QuestionHeader />

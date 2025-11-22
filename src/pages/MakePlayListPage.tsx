@@ -61,8 +61,19 @@ const MakePlayListPage: React.FC = () => {
     };
 
     const sendResultMusic = () => {
+        const hasDuplicate = new Set(playlist).size !== playlist.length;
         if (nickname.trim() === '') {
             alert('닉네임을 입력해주세요.');
+            return;
+        }
+        else if (nickname.length > 6) {
+            alert('닉네임은 최대 6자까지 가능합니다.');
+            setNickname('');
+            return;
+        }
+
+        if (hasDuplicate) {
+            alert("중복된 노래가 있어요! 모두 다른 노래로 선택해주세요.");
             return;
         }
         localStorage.setItem('nickname', JSON.stringify({
@@ -73,6 +84,7 @@ const MakePlayListPage: React.FC = () => {
 
     return (
         <div className="h-screen overflow-hidden font-sans bg-gray-50 flex flex-col">
+
             {/* Main Container */}
             <div className="w-full bg-white flex flex-col flex-1 min-h-0">
                 
@@ -84,10 +96,11 @@ const MakePlayListPage: React.FC = () => {
 
                 {/* 3. Content Body (Split Layout) */}
                 <section className="flex flex-col md:flex-row flex-1 min-h-0">
+
                 
                     {/* Left: Nickname Input */}
                     <div className="w-full md:w-[40%] p-8 flex flex-col justify-center items-start border-b md:border-b-0 md:border-r border-gray-300 bg-white z-0">
-                        <label className="text-xl font-bold text-black mb-4 pl-1">
+                        <label className="text-body-big font-bold text-black mb-4 pl-1">
                             내 닉네임은 :
                         </label>
                         
@@ -96,10 +109,10 @@ const MakePlayListPage: React.FC = () => {
                                 type="text" 
                                 value={nickname}
                                 onChange={(e) => setNickname(e.target.value)}
-                                className="w-full h-24 border border-gray-400 px-4 text-center text-xl font-medium focus:outline-none focus:border-[#758BFD] focus:ring-1 focus:ring-[#758BFD] transition-colors rounded-sm"
+                                className="w-full h-24 border text-body-base border-gray-400 px-4 text-center text-xl focus:outline-none focus:border-[#758BFD] focus:ring-1 focus:ring-[#758BFD] transition-colors rounded-sm"
                                 placeholder="닉네임을 입력하세요" 
                             />
-                            <p className="text-right text-xl font-bold text-black mt-3">
+                            <p className="text-right text-body-big font-bold text-black mt-3">
                                 입니다.
                             </p>
                         </div>
@@ -112,6 +125,8 @@ const MakePlayListPage: React.FC = () => {
                         <div className="flex-1 relative min-h-0">
                             {playlist.map((song, index) => {
                                 const isOpen = openDropdownIndex === index;
+                                const openUp = index >= playlist.length - 2; // 마지막 2개는 위로 열기
+
                                 return (
                                     <div
                                         key={index}
@@ -134,19 +149,30 @@ const MakePlayListPage: React.FC = () => {
                                         </button>
 
                                         {isOpen && (
-                                            <div className="absolute top-[calc(100%+1px)] left-[-1px] right-[-1px] max-h-80 overflow-y-auto bg-white border-2 border-[#758BFD] shadow-2xl rounded-b-lg z-50 scrollbar-hide">
-                                                {SERVER_SONG_DATABASE.map((optionSong) => (
-                                                    <div
-                                                        key={optionSong}
-                                                        onClick={() => handleSongChange(index, optionSong)}
-                                                        className={`px-6 py-4 text-lg font-medium cursor-pointer text-center transition-colors
-                                        ${song === optionSong
-                                                            ? 'bg-[#EBEFFF] text-[#758BFD] font-bold'
-                                                            : 'text-gray-800 hover:bg-gray-100 hover:text-[#758BFD]'}`}
-                                                    >
-                                                        {optionSong}
-                                                    </div>
-                                                ))}
+                                            <div
+                                                className={`
+                                                    absolute left-[-1px] right-[-1px] max-h-80 overflow-y-auto 
+                                                    bg-white border-2 border-[#758BFD] shadow-2xl rounded-b-lg z-50 scrollbar-hide
+                                                    ${openUp ? 'bottom-[calc(100%+1px)] rounded-t-lg rounded-b-none' : 'top-[calc(100%+1px)] rounded-b-lg'}
+                                                `}
+                                            >
+
+                                                {SERVER_SONG_DATABASE.map((optionSong) => {
+                                                    const isSelected = song === optionSong;
+                                                    return (
+                                                        <div 
+                                                            key={optionSong} 
+                                                            onClick={() => handleSongChange(index, optionSong)}
+                                                            className={`px-6 py-4 text-lg font-medium cursor-pointer transition-colors text-center
+                                                                ${isSelected 
+                                                                    ? 'bg-[#EBEFFF] text-[#758BFD] font-bold' 
+                                                                    : 'text-gray-800 hover:bg-gray-100 hover:text-[#758BFD]'
+                                                                }`}
+                                                        >
+                                                            {optionSong}
+                                                        </div>
+                                                    );
+                                                })}
                                             </div>
                                         )}
                                     </div>

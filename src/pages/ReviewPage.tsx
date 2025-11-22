@@ -40,18 +40,18 @@ export default function ReviewPage() {
         <main className="h-screen grid grid-rows-[auto_auto_auto_1fr] overflow-hidden">
             <Header />
 
-            <div className="text-center py-8 border-b border-black">
-                <h1 className="text-7xl font-black">노래 감상평 확인하기</h1>
+            <div className="text-center py-8 border-b border-gray-300">
+                <h1 className="text-nickname">노래 감상평 확인하기</h1>
             </div>
 
-            <div className="grid grid-cols-3 border-y border-black text-center">
+            <div className="grid grid-cols-3 border-y border-gray-300 text-center">
                 <input
                     type="text"
                     maxLength={6}
                     value={code}
                     onChange={(e) => setCode(e.target.value)}
                     className={`
-                        col-span-2 p-6 text-heading-h4 border-r border-black
+                        col-span-2 p-6 text-heading-h4 border-r border-gray-300
                         text-center tracking-wide
                         ${isValid ? "text-primary-300" : "text-black"}
                     `}
@@ -69,9 +69,9 @@ export default function ReviewPage() {
             {isValid && (
                 <div className="grid grid-cols-3 overflow-hidden">
 
-                    <div className="col-span-2 divide-y border-r border-black overflow-hidden text-center">
+                    <div className="col-span-2 divide-y border-gray-300 overflow-hidden text-center">
                         {mockPlaylist.map((song, idx) => (
-                            <div key={idx} className="p-7 text-heading-h4 bg-primary-100 border-b border-black ">
+                            <div key={idx} className="p-7 text-heading-h4 bg-primary-100 border-gray-300 ">
                                 {song}
                             </div>
                         ))}
@@ -82,7 +82,7 @@ export default function ReviewPage() {
                             const [gen, type, suffix] = item.type.split(" ");
 
                             return (
-                                <div key={idx} className="border border-black rounded-lg p-4 bg-white">
+                                <div key={idx} className="border border-gray-300 rounded-lg p-4 bg-white">
                                     <p className="text-heading-h4 font-semibold">
                                         <span className="text-primary-300">{gen.replace("세대", "")}</span>
                                         <span className="text-black">세대 </span>
