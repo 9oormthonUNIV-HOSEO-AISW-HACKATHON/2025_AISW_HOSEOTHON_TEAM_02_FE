@@ -46,14 +46,14 @@ export default function ReviewPage() {
             if (code.trim().length === 6) {
                 try {
                     const storedUserCode = localStorage.getItem("userCode") || '';
-
+                    const playListId = localStorage.getItem("playListId") || '';
                     if (!storedUserCode) {
                         alert("사용자 코드가 저장되어 있지 않습니다!");
                         return;
                     }
 
-                    const playlistRes = await api.get(`/api/v1/playlists/${storedUserCode}`);
                     const reviewRes = await api.get(`/api/v1/reviews/${code.trim()}`);
+                    const playlistRes = await api.get(`/api/v1/playlists/${playListId}`);
 
                     const playlistData = playlistRes.data.data.songs || [];
                     const reviewData = reviewRes.data.data || {};
