@@ -96,10 +96,10 @@ const PlayListResultPage: React.FC = () => {
 
                         {/* Bottom Button (Exchange) */}
                         <div className="h-24 border-t border-gray-300 flex items-center justify-between px-8 hover:bg-gray-50 transition-colors cursor-pointer"
-                             onClick={() => navigate('/exchange')} // 예시: 교환 페이지로 이동
+                             onClick={() => navigate('/play-list-exchange')} // 예시: 교환 페이지로 이동
                         >
                             <span className="text-xl font-bold text-black">
-                                플리 교환하기
+                                플리 추천받기
                             </span>
                             <div className="w-12 h-12 rounded-full border border-gray-400 flex items-center justify-center">
                                 <ChevronRight className="text-gray-600" size={24} />
