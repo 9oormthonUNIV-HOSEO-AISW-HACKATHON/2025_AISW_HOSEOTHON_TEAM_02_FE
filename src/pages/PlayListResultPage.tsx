@@ -45,9 +45,9 @@ const PlayListResultPage: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center font-sans bg-gray-50">
+        <div className="flex items-center justify-center">
             {/* Main Container */}
-            <div className="w-full bg-white shadow-xl ">
+            <div className="w-full bg-white">
                 
                 {/* 1. Header */}
                 <Header />

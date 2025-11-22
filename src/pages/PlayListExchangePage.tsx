@@ -28,12 +28,13 @@ const PlayListExchangePage: React.FC = () => {
 
     const handleSave = () => {
         console.log("저장된 감상평:", review);
+        navigate(-1);
         // 저장 로직 수행 후 이동
         alert("저장이 완료되었습니다!");
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center font-sans bg-gray-50">
+        <div className="h-full flex items-center justify-center bg-gray-50">
             {/* Main Container */}
             <div className="w-full bg-white shadow-xl border border-gray-200">
                 
@@ -54,14 +55,14 @@ const PlayListExchangePage: React.FC = () => {
                 </section>
 
                 {/* 4. Content Body (Split Layout) */}
-                <section className="flex flex-col md:flex-row min-h-[500px]">
+                <section className="flex flex-col md:flex-row ">
                 
                 {/* Left: Playlist View (Background Color) */}
-                <div className="w-full md:w-[70%] bg-[#EBEFFF] flex flex-col border-b md:border-b-0 md:border-r border-gray-300">
+                <div className="w-full md:w-[60%] bg-[#EBEFFF] flex flex-col border-b md:border-b-0 md:border-r border-gray-300">
                     {exchangeData.playlist.map((song, index) => (
                     <div 
                         key={index}
-                        className="flex-1 h-24 flex items-center justify-center border-b border-gray-300 px-4 last:border-b-0"
+                        className="flex-1 flex items-center justify-center border-b border-gray-300 px-4 last:border-b-0"
                     >
                         <span className="text-xl md:text-2xl font-bold text-black text-center tracking-wide">
                         {song}
@@ -71,24 +72,21 @@ const PlayListExchangePage: React.FC = () => {
                 </div>
 
                 {/* Right: Info & Input Form */}
-                <div className="w-full md:w-[30%] bg-white flex flex-col justify-between">
+                <div className="w-full md:w-[40%] bg-white flex flex-col justify-between">
                     
                     {/* Top: Exchange Info & Input */}
                     <div className="p-8 flex flex-col items-end w-full">
                         {/* Target Type Info */}
-                        <div className="mb-8 text-right">
-                            <h3 className="text-3xl font-bold text-black mb-1 mr-40">
-                                <span className="text-[#758BFD]">{exchangeData.targetGeneration}</span>세대 <span className="text-[#758BFD]">{exchangeData.targetType}</span> 유형
+                        <div className="mb-8 text-center w-full">
+                            <h3 className="text-3xl font-bold text-black mb-1 ">
+                                <span className="text-[#758BFD]">{exchangeData.targetGeneration}</span>세대 <span className="text-[#758BFD]">{exchangeData.targetType}</span> 유형 사용자가 제작했어요
                             </h3>
-                            <p className="text-lg font-bold text-black">
-                            사용자가 제작했어요
-                            </p>
                         </div>
 
                         {/* Review Input Box */}
                         <div className="w-full h-32 md:h-40 border border-gray-400 p-4 flex items-center justify-center">
                             <textarea
-                                className="w-full h-full text-center text-gray-600 font-medium focus:outline-none resize-none placeholder-gray-500 pt-10" // pt-10으로 플레이스홀더 수직 중앙 정렬 느낌
+                                className="w-full h-full text-center text-body-base text-gray-600 focus:outline-none resize-none placeholder-gray-500 pt-10" // pt-10으로 플레이스홀더 수직 중앙 정렬 느낌
                                 placeholder="감상평을 작성해주세요!"
                                 value={review}
                                 onChange={(e) => setReview(e.target.value)}
@@ -97,7 +95,7 @@ const PlayListExchangePage: React.FC = () => {
                     </div>
 
                     {/* Bottom: Save Button */}
-                    <div className="h-24 my-1 border-t border-gray-300 flex items-center justify-end px-8 gap-4 hover:bg-gray-50 transition-colors cursor-pointer"
+                    <div className="h-16 my-4 border-t border-gray-300 flex items-center justify-end px-8 gap-4 hover:bg-gray-100 transition-colors cursor-pointer"
                         onClick={handleSave}
                     >
                         <span className="text-2xl font-bold text-black">
