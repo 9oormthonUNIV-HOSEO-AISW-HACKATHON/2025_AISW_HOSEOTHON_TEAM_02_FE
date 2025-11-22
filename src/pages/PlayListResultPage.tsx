@@ -45,9 +45,10 @@ const PlayListResultPage: React.FC = () => {
     };
 
     return (
-        <div className="flex items-center justify-center">
+        <div className="h-screen overflow-hidden flex flex-col font-sans bg-gray-50">
             {/* Main Container */}
-            <div className="w-full bg-white">
+            <div className="w-full bg-white shadow-xl flex flex-col flex-1 min-h-0">
+
                 
                 {/* 1. Header */}
                 <Header />
@@ -63,7 +64,7 @@ const PlayListResultPage: React.FC = () => {
                 </section>
 
                 {/* 4. Content Body (Split Layout) */}
-                <section className="flex flex-col md:flex-row min-h-[400px]">
+                <section className="flex flex-col md:flex-row flex-1 min-h-0">
                 
                     {/* Left: Playlist Code & Action */}
                     <div className="w-full md:w-[40%] flex flex-col bg-white border-b md:border-b-0 md:border-r border-gray-300">

@@ -203,15 +203,15 @@ const QuestionPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="w-full border-b border-black">
+      <div className="h-screen bg-white font-sans overflow-hidden flex flex-col">
+      <div className="w-full border-b border-black shrink-0">
+
         <Header />
 
         <QuestionHeader />
       </div>
 
-      <div className="flex mx-auto border-t border-gray-300 h-[600px]">
-        {/* Left Sidebar */}
+        <div className="flex border-t border-gray-300 flex-1 overflow-hidden">
         <aside className="w-1/4 border-r border-gray-300 bg-[#E9ECFF] overflow-y-auto">
           {questions.map((q) => (
             <div
@@ -240,20 +240,20 @@ const QuestionPage: React.FC = () => {
         </aside>
 
         {/* Right Content */}
-        <main className="w-3/4 p-10 flex flex-col relative">
-            <div className="mb-12">
+          <main className="w-3/4 p-10 flex flex-col overflow-hidden">
+            <div className="mb-[40px]">
                 <div className="flex items-start gap-3">
-                    <span className="text-2xl font-extrabold text-black">
+                    <span className="text-heading-h4 font-extrabold text-black">
                     질문 {activeQuestion.id}.
                     </span>
 
-                    <h2 className="text-2xl font-bold leading-normal">
+                    <h2 className="text-heading-h4 font-bold leading-normal">
                     {activeQuestion.question}
                     </h2>
                 </div>
             </div>
 
-          <div className="w-full border border-gray-400 divide-y divide-gray-400">
+            <div className="w-full border border-gray-400 divide-y divide-gray-400 overflow-hidden flex-1 min-h-0">
             {activeQuestion.options.map((opt, idx) => {
               const isSelected = answers[activeQuestion.id] === idx;
 
@@ -262,7 +262,7 @@ const QuestionPage: React.FC = () => {
                   key={idx}
                   onClick={() => setAnswer(activeQuestion.id, idx)}
                   className={`
-                    cursor-pointer  w-full py-5 text-lg font-bold text-center hover:bg-[#E9ECFF] transition-colors
+                    cursor-pointer w-full py-5 text-body-base font-bold text-center hover:bg-[#E9ECFF] transition-colors
                     ${
                       isSelected
                         ? "bg-[#E9ECFF] text-blue-600"

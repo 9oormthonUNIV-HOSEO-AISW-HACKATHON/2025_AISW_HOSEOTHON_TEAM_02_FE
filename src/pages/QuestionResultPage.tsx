@@ -34,7 +34,9 @@ const QuestionResultPage: React.FC = () => {
     }
 
   return (
-    <div className="min-h-screen bg-white">
+
+      <div className="h-screen overflow-hidden bg-white font-sans text-slate-800">
+
       <div className="w-full border-b border-black">
         
         {/* 1. Top Bar (Logo) */}
@@ -44,18 +46,22 @@ const QuestionResultPage: React.FC = () => {
         <QuestionHeader />
 
         {/* 3. Main Result Section */}
-        <section className="flex border-b border-gray-300 h-[400px]">
+
+          <section className="flex flex-1 min-h-0 border-b border-gray-300">
+
           {/* Left: Result Text */}
-          <div className="flex-1 flex flex-col justify-center items-center p-8 text-center bg-white">
+          <div className="flex-1 flex flex-col justify-center items-center p-16 mt-2 text-center bg-white">
             <div className="space-y-2">
               <p className="text-3xl text-nickname text-black">
-                당신은 <span className="text-heading-h2 ">K-POP</span>{' '}
-                <span className="text-[#758BFD] text-heading-h2">{generation}</span>
+                당신은 <span className="text-heading-h2 font-extrabold">K-POP</span>{' '}
+                <span className="text-primary-300 text-heading-h2 font-extrabold">{generation}</span>
+
                 <span className="text-heading-h2 font-bold">세대</span>
               </p>
               
               <div className="flex items-end justify-center gap-2 mt-4">
-                <span className="text-[#758BFD] text-heading-h2 ">
+                <span className="text-primary-300 text-heading-h2 font-extrabold">
+
                     {type}
                 </span>
                 <span className="text-heading-h2 text-black">
@@ -79,14 +85,14 @@ const QuestionResultPage: React.FC = () => {
         </section>
 
         {/* 4. Footer Details (Grid) */}
-        <section className="grid grid-cols-2 h-[224px] bg-[#EBEFFF]">
+          <section className="grid grid-cols-2 flex-none bg-[#EBEFFF]">
 
           {/* Left Col: Artists */}
           <div className="p-8 text-center border-b md:border-b-0 md:border-r border-gray-300">
             <h3 className="text-body-big font-bold text-black mb-4">
               K-POP {generation}세대 아티스트
             </h3>
-            <p className="text-black text-heading-h4 font-medium">
+            <p className="text-black text-body-base">
               {getArtists(generation as GenKeys).join(" / ")}
             </p>
           </div>
@@ -96,7 +102,7 @@ const QuestionResultPage: React.FC = () => {
             <h3 className="text-body-big font-bold text-black mb-4">
               {type} 유형의 주 노래
             </h3>
-            <div className="text-black font-medium text-heading-h4">
+            <div className="text-black text-body-base">
                 {(() => {
                     const songs = getSongs(type as TypeKeys);
                     const rows = [];
