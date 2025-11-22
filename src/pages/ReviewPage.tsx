@@ -1,40 +1,82 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
+import api from "../api/axios.ts";
 
 export default function ReviewPage() {
-    const [code, setCode] = useState("");
-    const [isValid, setIsValid] = useState(false);
 
+    interface Song {
+        title: string;
+        artist: string;
+    }
+
+    interface Review {
+        reviewId: number;
+        content: string;
+        createdAt: string;
+    }
+
+    const [playlist, setPlaylist] = useState<Song[]>([]);
+    const [reviews, setReviews] = useState<Review[]>([]);
+
+
+    const [code, setCode] = useState("");
+    const [generationLabel, setGenerationLabel] = useState("");
+    const [typeLabel, setTypeLabel] = useState("");
+
+    const [isValid, setIsValid] = useState(false);
     const navigate = useNavigate();
 
-    const mockPlaylist = [
-        "빅뱅 – FANTASTIC BABY",
-        "2NE1 - I DON’T CARE",
-        "에픽하이 - 우산",
-        "태양 - WHERE U AT",
-        "블락비 - VERY GOOD",
-    ];
+    const genMap: Record<string, string> = {
+        gen1: "1세대",
+        gen2: "2세대",
+        gen3: "3세대",
+        gen4: "4세대",
+    };
 
-    const mockReviews = [
-        { type: "4세대 힙합 유형", review: "이 노래가 00가수 원조인지 처음 알았어요" },
-        { type: "1세대 힙합 유형", review: "잘듣고갑니다~^^" },
-        { type: "4세대 힙합 유형", review: "엄빠랑 얘기하다가 밤샜어요ㅋㅋ" },
-        { type: "3세대 힙합 유형", review: "완-존 내취향" },
-        { type: "3세대 힙합 유형", review: "신나서 바로 뛰었음ㅋㅋ" },
-    ];
+    const genreMap: Record<string, string> = {
+        emo: "감성",
+        hip: "힙합",
+        vocal: "보컬",
+        dance: "댄스",
+    };
 
-    const handleButtonClick = () => {
+    const handleButtonClick = async () => {
         if (!isValid) {
             if (code.trim().length === 6) {
-                setIsValid(true);
+                try {
+                    const storedUserCode = localStorage.getItem("userCode") || '';
+
+                    if (!storedUserCode) {
+                        alert("사용자 코드가 저장되어 있지 않습니다!");
+                        return;
+                    }
+
+                    const playlistRes = await api.get(`/api/v1/playlists/${storedUserCode}`);
+                    const reviewRes = await api.get(`/api/v1/reviews/${code.trim()}`);
+
+                    const playlistData = playlistRes.data.data.songs || [];
+                    const reviewData = reviewRes.data.data || {};
+
+                    setPlaylist(playlistData);
+                    setReviews(reviewData.reviews || []);
+
+                    setGenerationLabel(genMap[reviewData.generation]);
+                    setTypeLabel(genreMap[reviewData.favoriteGenre]);
+
+                    setIsValid(true);
+                } catch (error) {
+                    alert("존재하지 않는 코드입니다!");
+                    console.error(error);
+                }
             } else {
                 alert("6자리 코드를 입력해주세요!");
             }
         } else {
-            navigate("/share");
+            navigate("/share", { state: { code } });
         }
     };
+
 
     return (
         <main className="h-screen grid grid-rows-[auto_auto_auto_1fr] overflow-hidden">
@@ -50,11 +92,9 @@ export default function ReviewPage() {
                     maxLength={6}
                     value={code}
                     onChange={(e) => setCode(e.target.value)}
-                    className={`
-                        col-span-2 p-6 text-heading-h4 border-r border-gray-300
-                        text-center tracking-wide
-                        ${isValid ? "text-primary-300" : "text-black"}
-                    `}
+                    className={`col-span-2 p-6 text-heading-h4 border-r border-gray-300 text-center tracking-wide ${
+                        isValid ? "text-primary-300" : "text-black"
+                    }`}
                     placeholder="000000"
                 />
                 <button
@@ -65,38 +105,36 @@ export default function ReviewPage() {
                 </button>
             </div>
 
-            {/* 플레이리스트 & 리뷰 */}
             {isValid && (
                 <div className="grid grid-cols-3 overflow-hidden">
 
+                    {/* Playlist */}
                     <div className="col-span-2 divide-y border-gray-300 overflow-hidden text-center">
-                        {mockPlaylist.map((song, idx) => (
-                            <div key={idx} className="p-7 text-heading-h4 bg-primary-100 border-gray-300 ">
-                                {song}
+                        {playlist.map((song, idx) => (
+                            <div key={idx} className="p-7 text-heading-h4 bg-primary-100 border-gray-300">
+                                {song.title} - {song.artist}
                             </div>
                         ))}
                     </div>
 
+                    {/* Reviews */}
                     <div className="col-span-1 p-6 overflow-y-auto space-y-4">
-                        {mockReviews.map((item, idx) => {
-                            const [gen, type, suffix] = item.type.split(" ");
+                        {reviews.map((item) => (
+                            <div key={item.reviewId} className="border border-gray-300 rounded-lg p-4 bg-white">
+                                <p className="text-heading-h4 font-semibold">
+                                    <span className="text-primary-300">{generationLabel}</span>{" "}
+                                    <span className="text-primary-300">{typeLabel}</span> 유형
+                                </p>
+                                <p className="text-regular-16 mt-2 text-black">
+                                    {item.content}
+                                </p>
+                            </div>
+                        ))}
 
-                            return (
-                                <div key={idx} className="border border-gray-300 rounded-lg p-4 bg-white">
-                                    <p className="text-heading-h4 font-semibold">
-                                        <span className="text-primary-300">{gen.replace("세대", "")}</span>
-                                        <span className="text-black">세대 </span>
-                                        <span className="text-primary-300">{type}</span>
-                                        <span className="text-black"> {suffix}</span>
-                                    </p>
-                                    <p className="text-regular-16 mt-2 text-black">
-                                        {item.review}
-                                    </p>
-                                </div>
-                            );
-                        })}
+                        {reviews.length === 0 && (
+                            <p className="text-gray-400 text-center mt-10">아직 작성된 감상평이 없습니다.</p>
+                        )}
                     </div>
-
                 </div>
             )}
         </main>
