@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { useQuestionStore } from "../store/useQuestionStore";
+import Header from "../components/Header";
+import { useNavigate } from "react-router-dom";
+import QuestionHeader from "../components/QuestionHeader";
 
 // 타입 정의
 interface Option {
@@ -131,6 +134,7 @@ const questions: QuestionData[] = [
 const QuestionPage: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const { answers, setAnswer } = useQuestionStore();
+  const navigate = useNavigate();
 
   const activeQuestion = questions.find((q) => q.id === currentStep)!;
 
@@ -162,13 +166,13 @@ const QuestionPage: React.FC = () => {
     return {
       resultGen:
         bestGen === "g1"
-          ? "1세대"
+          ? "1"
           : bestGen === "g2"
-          ? "2세대"
+          ? "2"
           : bestGen === "g3"
-          ? "3세대"
-          : "4세대",
-      resultType: `${bestType}형`,
+          ? "3"
+          : "4",
+      resultType: `${bestType}`,
       genScore,
       typeScore,
       answers,
@@ -177,22 +181,21 @@ const QuestionPage: React.FC = () => {
 
   const handleSubmit = () => {
     const result = calculateResult();
-    console.log("🔥 최종 결과:", result);
+    console.log(" 최종 결과:", result);
+    navigate("/result", { 
+      state: { 
+        generation: result.resultGen, 
+        type: result.resultType 
+      } 
+    });
   };
 
   return (
     <div className="min-h-screen bg-white font-sans text-slate-800">
       <div className="w-full border-b border-black">
-        <div className="bg-[#E9ECFF] px-4 py-2 border-b border-black">
-          <span className="font-bold text-[28px] text-slate-800">
-            도-<span className="text-blue-500">솔</span>
-          </span>
-        </div>
-        <div className="py-12 text-center">
-          <h1 className="text-5xl font-extrabold tracking-tight">
-            나는 KPOP 몇 세대 일까?
-          </h1>
-        </div>
+        <Header />
+
+        <QuestionHeader />
       </div>
 
       <div className="flex mx-auto border-t border-gray-300 h-[600px]">
@@ -226,11 +229,17 @@ const QuestionPage: React.FC = () => {
 
         {/* Right Content */}
         <main className="w-3/4 p-10 flex flex-col relative">
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold leading-normal">
-              {activeQuestion.question}
-            </h2>
-          </div>
+            <div className="mb-12">
+                <div className="flex items-start gap-3">
+                    <span className="text-2xl font-extrabold text-black">
+                    질문 {activeQuestion.id}.
+                    </span>
+
+                    <h2 className="text-2xl font-bold leading-normal">
+                    {activeQuestion.question}
+                    </h2>
+                </div>
+            </div>
 
           <div className="w-full border border-gray-400 divide-y divide-gray-400">
             {activeQuestion.options.map((opt, idx) => {
