@@ -24,6 +24,7 @@ const navigate = useNavigate();
 const nickname = JSON.parse(localStorage.getItem('nickname') || '{"nickname":"사용자"}').nickname;
 const userCode = localStorage.getItem('userCode') || '';
 const [targetUserCode, setTargetUserCode] = useState<string>('');
+const [targetPlayListId, setTargetPlayListId] = useState<string>('');
 
 const [recommendation, setRecommendation] = useState<RecommendationData | null>(null);
 const [review, setReview] = useState('');
@@ -45,6 +46,7 @@ useEffect(() => {
             setRecommendation(res.data.data);
             console.log('추천 데이터:', res.data);
             setTargetUserCode(res.data.data.targetUserCode);
+            setTargetPlayListId(res.data.data.playlistId);
         } catch (error) {
             console.error('추천 데이터 가져오기 실패:', error);
         }
@@ -64,6 +66,11 @@ const handleSave = async () => {
             writerUserCode: userCode,          // 내 코드
             targetUserCode: targetUserCode,    // 상대방 코드
             content: review                     // 작성한 감상평
+        });
+
+        await api.post('/api/v1/exchanges', {
+            playlistId: targetPlayListId,   // 상대방 플레이리스트 ID
+            userCode: userCode,
         });
 
         alert("감상평이 저장되었습니다!");
