@@ -44,7 +44,7 @@ export default function SharePage() {
     const [selectedIndex, setSelectedIndex] = useState(0);
 
     return (
-        <main className="h-screen grid grid-rows-[auto_auto_auto_1fr] overflow-hidden">
+        <main className="min-h-screen grid grid-rows-[auto_auto_auto_1fr] overflow-hidden">
             <Header />
 
             <div className="text-center py-8 border-b border-black">
