@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronRight, ChevronDown } from 'lucide-react'; // ChevronDown 추가
+import { ChevronDown } from 'lucide-react'; // ChevronDown 추가
 import Header from '../components/Header';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PlayListHeader from '../components/PlayListHeader';
+import Nextbutton_Right from "../assets/img/Nextbutton_Right.svg";
 
 interface LocationState {
     generation?: string;
@@ -71,9 +72,9 @@ const MakePlayListPage: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center font-sans bg-gray-50">
+        <div className="h-screen overflow-hidden font-sans bg-gray-50 flex flex-col">
             {/* Main Container */}
-            <div className="w-full bg-white ">
+            <div className="w-full bg-white flex flex-col flex-1 min-h-0">
                 
                 {/* 1. Header (Logo) */}
                 <Header />
@@ -82,7 +83,7 @@ const MakePlayListPage: React.FC = () => {
                 <PlayListHeader />
 
                 {/* 3. Content Body (Split Layout) */}
-                <section className="flex flex-col md:flex-row min-h-[500px]">
+                <section className="flex flex-col md:flex-row flex-1 min-h-0">
                 
                     {/* Left: Nickname Input */}
                     <div className="w-full md:w-[40%] p-8 flex flex-col justify-center items-start border-b md:border-b-0 md:border-r border-gray-300 bg-white z-0">
@@ -106,57 +107,46 @@ const MakePlayListPage: React.FC = () => {
 
                     {/* Right: Playlist Items */}
                     <div className="w-full md:w-[60%] flex flex-col bg-white z-10">
+
                         {/* List Items */}
-                        <div className="flex-grow relative">
+                        <div className="flex-1 relative min-h-0">
                             {playlist.map((song, index) => {
                                 const isOpen = openDropdownIndex === index;
                                 return (
-                                    <div 
+                                    <div
                                         key={index}
-                                        // z-index 관리: 열린 드롭다운이 다른 요소 위에 오도록 설정
                                         className={`relative h-20 border-b border-gray-300 ${isOpen ? 'z-30' : 'z-20'}`}
                                     >
-                                        {/* --- 커스텀 드롭다운 트리거 버튼 --- */}
                                         <button
                                             onClick={() => toggleDropdown(index)}
                                             className={`w-full h-full flex items-center justify-between px-6 transition-colors outline-none cursor-pointer
-                                                ${isOpen ? 'bg-white' : 'bg-[#EBEFFF] hover:bg-[#dfe5ff]'}`}
+                            ${isOpen ? 'bg-white' : 'bg-[#EBEFFF] hover:bg-[#dfe5ff]'}`}
                                         >
-                                            {/* 중앙 정렬을 위한 빈 공간 */}
-                                            <span className="w-6"></span> 
-                                            
-                                            {/* 선택된 노래 제목 */}
-                                            <span className={`text-lg md:text-xl font-bold text-center truncate mx-4
-                                                ${isOpen ? 'text-[#758BFD]' : 'text-black'}`}>
-                                                {song}
-                                            </span>
-                                            
-                                            {/* 드롭다운 화살표 아이콘 */}
-                                            <ChevronDown 
-                                                className={`text-gray-500 transition-transform duration-300 ${isOpen ? 'rotate-180 text-[#758BFD]' : ''}`} 
-                                                size={24} 
+                                            <span className="w-6"></span>
+                                            <span className={`text-body-base font-bold md:text-xl text-center truncate mx-4
+                            ${isOpen ? 'text-[#758BFD]' : 'text-black'}`}>
+                            {song}
+                        </span>
+                                            <ChevronDown
+                                                className={`text-gray-500 transition-transform duration-300 ${isOpen ? 'rotate-180 text-[#758BFD]' : ''}`}
+                                                size={24}
                                             />
                                         </button>
 
-                                        {/* --- 커스텀 드롭다운 메뉴 리스트 --- */}
                                         {isOpen && (
                                             <div className="absolute top-[calc(100%+1px)] left-[-1px] right-[-1px] max-h-80 overflow-y-auto bg-white border-2 border-[#758BFD] shadow-2xl rounded-b-lg z-50 scrollbar-hide">
-                                                {SERVER_SONG_DATABASE.map((optionSong) => {
-                                                    const isSelected = song === optionSong;
-                                                    return (
-                                                        <div 
-                                                            key={optionSong} 
-                                                            onClick={() => handleSongChange(index, optionSong)}
-                                                            className={`px-6 py-4 text-lg font-medium cursor-pointer transition-colors text-center
-                                                                ${isSelected 
-                                                                    ? 'bg-[#EBEFFF] text-[#758BFD] font-bold' 
-                                                                    : 'text-gray-800 hover:bg-gray-100 hover:text-[#758BFD]'
-                                                                }`}
-                                                        >
-                                                            {optionSong}
-                                                        </div>
-                                                    );
-                                                })}
+                                                {SERVER_SONG_DATABASE.map((optionSong) => (
+                                                    <div
+                                                        key={optionSong}
+                                                        onClick={() => handleSongChange(index, optionSong)}
+                                                        className={`px-6 py-4 text-lg font-medium cursor-pointer text-center transition-colors
+                                        ${song === optionSong
+                                                            ? 'bg-[#EBEFFF] text-[#758BFD] font-bold'
+                                                            : 'text-gray-800 hover:bg-gray-100 hover:text-[#758BFD]'}`}
+                                                    >
+                                                        {optionSong}
+                                                    </div>
+                                                ))}
                                             </div>
                                         )}
                                     </div>
@@ -164,17 +154,23 @@ const MakePlayListPage: React.FC = () => {
                             })}
                         </div>
 
-                        {/* Bottom Action Area */}
-                        <div className="h-24 bg-white flex items-center justify-end px-8 gap-4 border-t border-gray-200 z-20 relative">
-                            <span className="text-xl font-bold text-black">
+                        {/* Bottom Action Area - 전체 남는 공간 버튼화 */}
+                        <div
+                            onClick={sendResultMusic}
+                            className="h-[170px] flex items-center justify-end px-6 gap-3 cursor-pointer bg-white hover:bg-hover-white transition-colors">
+                            <span className="text-body-big text-black">
                                 플리 완성
                             </span>
-                            <button onClick={sendResultMusic}
-                                    className="w-12 h-12 rounded-full border border-gray-400 flex items-center justify-center hover:bg-[#EBEFFF] hover:border-[#758BFD] transition-all cursor-pointer group">
-                                <ChevronRight className="text-gray-600 group-hover:text-[#758BFD]" size={24} />
-                            </button>
+                            <img
+                                src={Nextbutton_Right}
+                                alt="next"
+                                className="w-10"
+                            />
                         </div>
+
+
                     </div>
+
 
                 </section>
 

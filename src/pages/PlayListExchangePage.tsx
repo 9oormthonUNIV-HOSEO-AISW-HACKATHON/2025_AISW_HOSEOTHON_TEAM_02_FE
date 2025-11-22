@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { ChevronRight } from 'lucide-react';
-import Header from '../components/Header'; // 기존 헤더 컴포넌트 재사용 가정
-import { useNavigate } from 'react-router-dom';
+import Header from '../components/Header';
 import PlayListHeader from '../components/PlayListHeader';
 
 const PlayListExchangePage: React.FC = () => {
-    const navigate = useNavigate();
+
     const [review, setReview] = useState('');
     const nickname = JSON.parse(localStorage.getItem('nickname') || '{"nickname":"사용자"}').nickname;
 
@@ -33,9 +32,9 @@ const PlayListExchangePage: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center font-sans bg-gray-50">
+        <div className="h-screen overflow-hidden flex flex-col font-sans bg-gray-50">
             {/* Main Container */}
-            <div className="w-full bg-white shadow-xl border border-gray-200">
+            <div className="w-full bg-white shadow-xl border border-gray-200 flex flex-col flex-1 min-h-0">
                 
                 {/* 1. Header */}
                 <Header />
@@ -54,7 +53,7 @@ const PlayListExchangePage: React.FC = () => {
                 </section>
 
                 {/* 4. Content Body (Split Layout) */}
-                <section className="flex flex-col md:flex-row min-h-[500px]">
+                <section className="flex flex-col md:flex-row flex-1 min-h-0">
                 
                 {/* Left: Playlist View (Background Color) */}
                 <div className="w-full md:w-[70%] bg-[#EBEFFF] flex flex-col border-b md:border-b-0 md:border-r border-gray-300">
