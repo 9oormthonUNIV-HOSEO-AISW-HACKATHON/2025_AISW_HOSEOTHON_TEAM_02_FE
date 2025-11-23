@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
-import api from "../api/axios.ts";
+import api from "../api/axios";
 
 export default function ReviewPage() {
 
@@ -12,6 +12,9 @@ export default function ReviewPage() {
 
     interface Review {
         reviewId: number;
+        writerNickname: string;
+        writerGeneration: string;
+        writerFavoriteGenre: string;
         content: string;
         createdAt: string;
     }
@@ -19,23 +22,20 @@ export default function ReviewPage() {
     const [playlist, setPlaylist] = useState<Song[]>([]);
     const [reviews, setReviews] = useState<Review[]>([]);
 
-
     const [code, setCode] = useState("");
-    const [generationLabel, setGenerationLabel] = useState("");
-    const [typeLabel, setTypeLabel] = useState("");
-
     const [isValid, setIsValid] = useState(false);
+
     const navigate = useNavigate();
 
     const genMap: Record<string, string> = {
-        gen1: "1세대",
-        gen2: "2세대",
-        gen3: "3세대",
-        gen4: "4세대",
+        gen1: "1",
+        gen2: "2",
+        gen3: "3",
+        gen4: "4",
     };
 
     const genreMap: Record<string, string> = {
-        emo: "감성",
+        eom: "감성",
         hip: "힙합",
         vocal: "보컬",
         dance: "댄스",
@@ -43,40 +43,37 @@ export default function ReviewPage() {
 
     const handleButtonClick = async () => {
         if (!isValid) {
-            if (code.trim().length === 6) {
-                try {
-                    const storedUserCode = localStorage.getItem("userCode") || '';
-                    const playListId = localStorage.getItem("playListId") || '';
-                    if (!storedUserCode) {
-                        alert("사용자 코드가 저장되어 있지 않습니다!");
-                        return;
-                    }
-
-                    const reviewRes = await api.get(`/api/v1/reviews/${code.trim()}`);
-                    const playlistRes = await api.get(`/api/v1/playlists/${playListId}`);
-
-                    const playlistData = playlistRes.data.data.songs || [];
-                    const reviewData = reviewRes.data.data || {};
-
-                    setPlaylist(playlistData);
-                    setReviews(reviewData.reviews || []);
-
-                    setGenerationLabel(genMap[reviewData.generation]);
-                    setTypeLabel(genreMap[reviewData.favoriteGenre]);
-
-                    setIsValid(true);
-                } catch (error) {
-                    alert("존재하지 않는 코드입니다!");
-                    console.error(error);
-                }
-            } else {
+            if (code.trim().length !== 6) {
                 alert("6자리 코드를 입력해주세요!");
+                return;
+            }
+
+            try {
+                const playListId = localStorage.getItem("playListId") || "";
+                if (!playListId) {
+                    alert("플레이리스트 정보가 없습니다!");
+                    return;
+                }
+
+                const reviewRes = await api.get(`/api/v1/reviews/${code.trim()}`);
+                const playlistRes = await api.get(`/api/v1/playlists/${playListId}`);
+
+                const playlistData = playlistRes.data.data?.songs || [];
+                const reviewData = reviewRes.data.data?.reviews || [];
+
+                setPlaylist(playlistData);
+                setReviews(reviewData);
+
+                setIsValid(true);
+
+            } catch (error) {
+                alert("존재하지 않는 코드입니다!");
+                console.error(error);
             }
         } else {
             navigate("/share", { state: { code } });
         }
     };
-
 
     return (
         <main className="h-screen grid grid-rows-[auto_auto_auto_1fr] overflow-hidden">
@@ -121,9 +118,15 @@ export default function ReviewPage() {
                     <div className="col-span-1 p-6 overflow-y-auto space-y-4">
                         {reviews.map((item) => (
                             <div key={item.reviewId} className="border border-gray-300 rounded-lg p-4 bg-white">
-                                <p className="text-heading-h4 font-semibold">
-                                    <span className="text-primary-300">{generationLabel}</span>{" "}
-                                    <span className="text-primary-300">{typeLabel}</span> 유형
+                                <p className="text-heading-h4 font-semibold text-black">
+                                    <span className="text-primary-300">
+                                        {genMap[item.writerGeneration] ?? "?"}
+                                    </span>
+                                    <span className="text-black">세대 </span>
+                                    <span className="text-primary-300">
+                                        {genreMap[item.writerFavoriteGenre] ?? ""}
+                                    </span>
+                                    <span className="text-black"> 유형</span>
                                 </p>
                                 <p className="text-regular-16 mt-2 text-black">
                                     {item.content}
@@ -132,9 +135,12 @@ export default function ReviewPage() {
                         ))}
 
                         {reviews.length === 0 && (
-                            <p className="text-gray-400 text-center mt-10">아직 작성된 감상평이 없습니다.</p>
+                            <p className="text-gray-400 text-center mt-10">
+                                아직 작성된 감상평이 없습니다.
+                            </p>
                         )}
                     </div>
+
                 </div>
             )}
         </main>
